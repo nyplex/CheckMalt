@@ -1,4 +1,8 @@
+from store.models import Product
 from django.shortcuts import render
 
 def Home(request):
-    return render(request, 'home.html')
+    products = Product.objects.all().filter(is_available=True)
+    return render(request, 'home.html', {
+        'products': products
+    })
