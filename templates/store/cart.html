@@ -22,40 +22,42 @@
 </tr>
 </thead>
 <tbody>
-<tr>
+{% for item in items %}
+	<tr>
 	<td>
 		<figure class="itemside align-items-center">
-			<div class="aside"><img src="{% static './images/items/11.jpg' %}" class="img-sm"></div>
+			<div class="aside"><img src="{{ item.product.images.url }}" class="img-sm"></div>
 			<figcaption class="info">
-				<a href="#" class="title text-dark">Camera Canon EOS M50 Kit</a>
-				<p class="text-muted small">Matrix: 25 Mpx <br> Brand: Canon</p>
+				<a href="#" class="title text-dark">{{ item.product.name }}</a>
+				<p class="text-muted small">Color: 25 Mpx <br> Size: Canon</p>
 			</figcaption>
 		</figure>
 	</td>
 	<td> 
 		<!-- col.// -->
-					<div class="col"> 
-						<div class="input-group input-spinner">
-							<div class="input-group-prepend">
-							<button class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </button>
-							</div>
-							<input type="text" class="form-control"  value="1">
-							<div class="input-group-append">
-							<button class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </button>
-							</div>
-						</div> <!-- input-group.// -->
-					</div> <!-- col.// -->
+		<div class="col"> 
+			<div class="input-group input-spinner">
+				<div class="input-group-prepend">
+				<a href="{% url 'remove_cart' item.product.id %}" class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </a>
+				</div>
+				<input type="text" class="form-control"  value="{{ item.quantity }}">
+				<div class="input-group-append">
+				<a href="{% url 'add_cart' item.product.id %}" class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </a>
+				</div>
+			</div> <!-- input-group.// -->
+		</div> <!-- col.// -->
 	</td>
 	<td> 
 		<div class="price-wrap"> 
-			<var class="price">$1156.00</var> 
-			<small class="text-muted"> $315.20 each </small> 
+			<var class="price">${{ item.sub_total }}</var> 
+			<small class="text-muted"> ${{ item.product.price }} each </small> 
 		</div> <!-- price-wrap .// -->
 	</td>
 	<td class="text-right"> 
-	<a href="" class="btn btn-danger"> Remove</a>
+		<a href="{% url 'delete_cart' item.product.id %}" class="btn btn-danger"> Remove</a>
 	</td>
 </tr>
+{% endfor %}
 </tbody>
 </table>
 </div> <!-- card.// -->
@@ -67,15 +69,15 @@
 		<div class="card-body">
 			<dl class="dlist-align">
 			  <dt>Total price:</dt>
-			  <dd class="text-right">$69.97</dd>
+			  <dd class="text-right">£{{ total }}</dd>
 			</dl>
 			<dl class="dlist-align">
 			  <dt>Tax:</dt>
-			  <dd class="text-right"> $10.00</dd>
+			  <dd class="text-right">£{{ tax }}</dd>
 			</dl>
 			<dl class="dlist-align">
 			  <dt>Total:</dt>
-			  <dd class="text-right text-dark b"><strong>$59.97</strong></dd>
+			  <dd class="text-right text-dark b"><strong>£{{ grand_total }}</strong></dd>
 			</dl>
 			<hr>
 			<p class="text-center mb-3">
