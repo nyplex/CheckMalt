@@ -130,8 +130,8 @@
     {% for product in products %}
         <div class="col-md-4">
             <figure class="card card-product-grid">
-                <div class="img-wrap"> 
-                    <img src="{{ product.images.url }}">
+                <div class="img-wrap">
+				<a href="{{ product.get_url }}"><img src="{{ product.images.url }}"></a> 
                 </div> <!-- img-wrap.// -->
                 <figcaption class="info-wrap">
                     <div class="fix-height">
