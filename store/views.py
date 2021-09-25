@@ -1,10 +1,12 @@
 from django.core import paginator
+from django.http.response import HttpResponse
 from cart.models import CartItem
 from category.models import Category
 from store.models import Product
 from django.shortcuts import get_object_or_404, render
 from cart.views import _cart_id
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Q
 
 # Create your views here.
 
@@ -41,4 +43,23 @@ def product_detail(request, category_slug, product_slug):
     return render(request, 'store/product_detail.html', {
         'product': product,
         'in_cart': in_cart
+    })
+
+def search(request):
+    if 'q' in request.GET:
+        query = request.GET['q']
+        if query:
+            products = Product.objects.filter(Q(description__icontains=query) | Q(name__icontains=query)).order_by('name')
+            product_count = products.count()
+        else:
+            products = None
+            product_count = 0
+    else:
+        products = None
+        product_count = 0
+
+    return render(request, 'store/store.html', {
+        'products': products,
+        'product_count': product_count
+
     })
